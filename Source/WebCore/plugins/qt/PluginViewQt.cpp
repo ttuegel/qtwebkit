@@ -697,7 +697,11 @@ static Display *getPluginDisplay()
     // support gdk based plugins (like flash) that use a different X connection.
     // The code below has the same effect as this one:
     // Display *gdkDisplay = gdk_x11_display_get_xdisplay(gdk_display_get_default());
+#ifdef NIXPKGS_LIBGDK2
+    QLibrary library(QLatin1String(NIXPKGS_LIBGDK2), 0);
+#else
     QLibrary library(QLatin1String("libgdk-x11-2.0"), 0);
+#endif
     if (!library.load())
         return 0;
 

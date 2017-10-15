@@ -53,7 +53,11 @@ static void messageHandler(QtMsgType type, const QMessageLogContext&, const QStr
 
 static bool initializeGtk()
 {
+#ifdef NIXPKGS_LIBGTK2
+    QLibrary gtkLibrary(QLatin1String(NIXPKGS_LIBGTK2), 0);
+#else
     QLibrary gtkLibrary(QLatin1String("libgtk-x11-2.0"), 0);
+#endif
     if (!gtkLibrary.load())
         return false;
     typedef void* (*gtk_init_ptr)(void*, void*);
